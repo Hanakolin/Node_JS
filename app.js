@@ -1,8 +1,10 @@
 const express= require('express')
 const app=express()
 
- app.set('view engine', 'ejs')
+require('dotenv').config()
 
+ app.set('view engine', 'ejs')
+require('./model/index')
 
 app.get('/',(req,res)=>{
     res.render("home.ejs")
