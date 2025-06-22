@@ -33,6 +33,16 @@ app.get('/blog/:id', async(req, res) => {
        res.render('home',{blogs :datas}) 
     })
 
+
+    app.get('/delete/:id',async(req, res) => {
+        const id = req.params.id
+       await blogs.destroy({
+            where: {
+                id: id
+            }
+        })
+        res.redirect('/')
+    })
  app.get('/creat', (req, res) => {
     res.render('creat.ejs')
 })
