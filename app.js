@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: true}))
     res.render('creat.ejs')
 })
 
-app.post('/creat', async (req, res) => {
+app.post('/creat', upload.single('image')  ,async (req, res) => {
     const { title, subtitle, description } = req.body
     await blogs.create({ title, subtitle, description })
     res.send('blog added successfully')
