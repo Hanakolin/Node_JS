@@ -1,18 +1,31 @@
+require('dotenv').config()
+
 const express= require('express')
+const { blogs } = require('./model/index')
 const app=express()
 
-require('dotenv').config()
+
+
 
  app.set('view engine', 'ejs')
 require('./model/index')
 
-app.get('/',(req,res)=>{
-    res.render("home.ejs")
+app.use(express.urlencoded({ extended: true}))
+//yo line ko code important xa monolethic artecture ma xa vana Monolethic artecture vana ko databasse ra code  sanag vako wala 
+
+ app.use(express.json())    //yo chai falto falto thou ma xa vana use hunxa hai 
+
+ app.get('/creat', (req, res) => {
+    res.render('creat.ejs')
 })
 
- app.get('/about',(req, res)=>{
-    res.render('about.ejs')
+app.post('/creat', async (req, res) => {
+    const { title, subtitle, description } = req.body
+    await blogs.create({ title, subtitle, description })
+    res.send('blog added successfully')
  })
+
+
 
 
  app.use(express.static("public/css/")) 
