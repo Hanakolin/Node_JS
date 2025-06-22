@@ -4,8 +4,13 @@ const express= require('express')
 const { blogs } = require('./model/index')
 const app=express()
 
+// const multer =require('./middleware/multerConfig').multer
+// const storage =require('./middleware/multerConfig').storage
 
+ const {multer,storage}= require('./middleware/multerConfig')
 
+// multer lai layana 2 taria vo ava jun garda ne hunxa hai 
+const upload = multer({ storage: storage })
 
  app.set('view engine', 'ejs')
 require('./model/index')
