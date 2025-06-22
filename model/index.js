@@ -1,5 +1,7 @@
 const { Sequelize, DataTypes } = require("sequelize")
 const databaseConfig = require('../config/dbConfig')
+const makeBlogTable = require("./blogModel")
+const makeUserTable = require("./userModel")
 
 const sequelize = new Sequelize( databaseConfig.db,databaseConfig.username, databaseConfig.password,{
     host: databaseConfig.host, 
@@ -23,6 +25,10 @@ sequelize.authenticate().then(()=>{
 const db={}
 db.Sequelize = Sequelize
 db.sequelize = sequelize 
+
+
+db.blogs = makeBlogTable(sequelize,DataTypes )
+db.users = makeUserTable( sequelize,DataTypes)
 
 
 db.sequelize.sync({ force : false}). then(()=>{
