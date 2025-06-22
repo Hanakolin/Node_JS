@@ -90,13 +90,12 @@
 
 </header>
 
-<% blogs.forEach(function(blog){ %>
 
     <div class="max-w-xs mx-auto overflow-hidden bg-white rounded-lg shadow-md mb-6">
     <div class="relative">
         <img 
             class="w-full h-64 object-cover" 
-            src="<%- blog.image %>" 
+            src="http://localhost:3000/<%-blog.image%>" 
             alt="Image"
         >
         <div class="absolute top-0 right-0">
@@ -104,15 +103,15 @@
         </div>
     </div>
     <div class="p-4">
-        <h3 class="text-xl font-semibold mb-2"><%- blog.title %></h3>
-        <p class="text-gray-700 text-base">
-            <%- blog.description %>
+        <h3 class="text-xl font-semibold mb-2"><%-blog.title%></h3>
+                <h5 class="text-xl font-semibold mb-2"><%-blog.subtitle%></h5>
+
+        <p class="text-gray-700 text-base"><%- blog.description%>
         </p>
     </div>
-    <a href="/blog/<%-blog.id%>">readmore</a>
+    <a href="/blog/">readmore</a>
 </div>
 
-<% })%>
 
 
 
