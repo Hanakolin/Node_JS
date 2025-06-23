@@ -9,10 +9,15 @@ const app=express()
 
 const bcrypot= require('bcrypt')
 
- const {multer,storage}= require('./middleware/multerConfig')
+
+const { homepage, singleBlog, deleteBlog, createform, regesterform, loginform, createBlog, registerform, registeruse, loginuse } = require('./controller/blogController')
+
+
+const blogRoute =require('./routes/blogRoute')
+const auuthRoute =require('./routes/authRoute')
+
 
 // multer lai layana 2 taria vo ava jun garda ne hunxa hai 
-const upload = multer({ storage: storage })
 
  app.set('view engine', 'ejs')
 require('./model/index')
@@ -22,73 +27,9 @@ app.use(express.urlencoded({ extended: true}))
 
  app.use(express.json())  
    //yo chai falto falto thou ma xa vana use hunxa hai
-
-
-app.get('/blog/:id', async(req, res) => {
-    const id =req.params.id
-    const blog = await blogs.findByPk(id)
-    res.render('singleBlog.ejs',{blog: blog})
-})
-
-    app.get ("/", async (req, res) =>{
-       const datas = await blogs.findAll()
-       res.render('home',{blogs :datas}) 
-    })
-
-
-    app.get('/delete/:id',async(req, res) => {
-        const id = req.params.id
-       await blogs.destroy({
-            where: {
-                id: id
-            }
-        })
-        res.redirect('/')
-    })
- app.get('/creat', (req, res) => {
-    res.render('creat.ejs')
-})
-
-app.post('/creat', upload.single('image')  ,async (req, res) => {
-    const filename =req.file.filename
-    const { title, subtitle, description } = req.body
-    await blogs.create({ title, subtitle, description,  image : filename})
-    res.send('blog added successfully')
- })
-
-
-app.get('/register', (req, res) => {
-    res.render('register.ejs')
-})
-app.post('/register', async (req, res) =>{
- const { username, email, password } = req.body
-await users.create({
- username: username,
-    email: email,
-    password: bcrypot.hashSync(password, 10) // 10 is the salt rounds
- })
- res.redirect('/login')
-})
-
-app.get('/login', (req, res) => {
-    res.render('login.ejs')
-})
-
-app.post('/login', async (req, res) => {
-    const { email, password } = req.body
-    const user = await users.findAll({ where: { email: email } })
-    if (user.length == 0) {
-        res.send('user not found')
-    } else {
-        const isMatched = bcrypot.compareSync(password, user[0].password)
-        if (isMatched) {
-            res.send('login successfully')
-        } else {
-            res.send('password not matched')
-        }
-    }
-})
-
+   
+app.use('',blogRoute)
+app.use('',auuthRoute)
 
  app.use(express.static("public/css/")) 
  app.use(express.static('./storage/'))
