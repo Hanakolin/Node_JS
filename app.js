@@ -1,11 +1,13 @@
 require('dotenv').config()
 
 const express= require('express')
-const { blogs } = require('./model/index')
+const { blogs, users } = require('./model/index')
 const app=express()
 
 // const multer =require('./middleware/multerConfig').multer
 // const storage =require('./middleware/multerConfig').storage
+
+const bcrypot= require('bcrypt')
 
  const {multer,storage}= require('./middleware/multerConfig')
 
@@ -55,7 +57,22 @@ app.post('/creat', upload.single('image')  ,async (req, res) => {
  })
 
 
+app.get('/register', (req, res) => {
+    res.render('register.ejs')
+})
+app.post('/register', async (req, res) =>{
+ const { username, email, password } = req.body
+await users.create({
+ username: username,
+    email: email,
+    password: bcrypot.hashSync(password, 10) // 10 is the salt rounds
+ })
+ res.redirect('/login')
+})
 
+app.get('/login', (req, res) => {
+    res.render('login.ejs')
+})
 
  app.use(express.static("public/css/")) 
  app.use(express.static('./storage/'))
