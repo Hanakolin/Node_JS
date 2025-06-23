@@ -74,6 +74,22 @@ app.get('/login', (req, res) => {
     res.render('login.ejs')
 })
 
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body
+    const user = await users.findAll({ where: { email: email } })
+    if (user.length == 0) {
+        res.send('user not found')
+    } else {
+        const isMatched = bcrypot.compareSync(password, user[0].password)
+        if (isMatched) {
+            res.send('login successfully')
+        } else {
+            res.send('password not matched')
+        }
+    }
+})
+
+
  app.use(express.static("public/css/")) 
  app.use(express.static('./storage/'))
 
